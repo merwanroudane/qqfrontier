@@ -66,6 +66,14 @@ class QQGrid:
     center: Optional[float] = None
     decimals: int = 2
     meta: Dict[str, object] = field(default_factory=dict)
+    row_names: Optional[Sequence[str]] = None
+    col_names: Optional[Sequence[str]] = None
+
+    def _rl(self, i: int) -> str:
+        return str(self.row_names[i]) if self.row_names is not None else fmt_q(self.row_q[i])
+
+    def _cl(self, j: int) -> str:
+        return str(self.col_names[j]) if self.col_names is not None else fmt_q(self.col_q[j])
 
     def __post_init__(self):
         self.values = np.asarray(self.values, dtype=float)
@@ -81,8 +89,8 @@ class QQGrid:
     # ------------------------------------------------------------------ data
     def to_matrix(self) -> pd.DataFrame:
         """Wide DataFrame: rows = row quantiles (high at the top), columns = col quantiles."""
-        df = pd.DataFrame(self.values, index=[fmt_q(q) for q in self.row_q],
-                          columns=[fmt_q(q) for q in self.col_q])
+        df = pd.DataFrame(self.values, index=[self._rl(i) for i in range(len(self.row_q))],
+                          columns=[self._cl(j) for j in range(len(self.col_q))])
         df.index.name, df.columns.name = self.row_label, self.col_label
         return df.iloc[::-1]
 
@@ -190,10 +198,10 @@ class QQGrid:
         out = ["=" * width, (self.title or self.value_label).center(width), "=" * width,
                f"Rows: {self.row_label}   Columns: {self.col_label}   Cells: {self.value_label}",
                "-" * width,
-               f"{'':>{w0}}" + "".join(f"{fmt_q(self.col_q[j]):>{w}}" for j in cols),
+               f"{'':>{w0}}" + "".join(f"{self._cl(j):>{w}}" for j in cols),
                "-" * width]
         for i in range(len(self.row_q) - 1, -1, -1):
-            out.append(f"{fmt_q(self.row_q[i]):>{w0}}" + "".join(f"{self._cell(i, j):>{w}}" for j in cols))
+            out.append(f"{self._rl(i):>{w0}}" + "".join(f"{self._cell(i, j):>{w}}" for j in cols))
             if self.se is not None:
                 out.append(f"{'':>{w0}}" + "".join(
                     f"{'(' + format(self.se[i, j], f'.{self.decimals}f') + ')':>{w}}" for j in cols))
@@ -208,7 +216,7 @@ class QQGrid:
         """GitHub/Pages Markdown table of the surface."""
         head = f"| {self.row_label} \\ {self.col_label} | " + " | ".join(fmt_q(q) for q in self.col_q) + " |"
         sep = "|---|" + "---|" * len(self.col_q)
-        body = [f"| **{fmt_q(self.row_q[i])}** | " + " | ".join(self._cell(i, j) for j in range(len(self.col_q))) + " |"
+        body = [f"| **{self._rl(i)}** | " + " | ".join(self._cell(i, j) for j in range(len(self.col_q))) + " |"
                 for i in range(len(self.row_q) - 1, -1, -1)]
         return "\n".join([head, sep] + body)
 
@@ -223,7 +231,7 @@ class QQGrid:
         lines += [r"\begin{tabular}{l" + "c" * n + "}", r"\toprule",
                   latex_escape(self.row_label) + r" & \multicolumn{" + str(n) + "}{c}{" + latex_escape(self.col_label) + r"} \\",
                   r"\cmidrule(lr){2-" + str(n + 1) + "}",
-                  " & " + " & ".join(fmt_q(q) for q in self.col_q) + r" \\", r"\midrule"]
+                  " & " + " & ".join(self._cl(j) for j in range(n)) + r" \\", r"\midrule"]
         for i in range(len(self.row_q) - 1, -1, -1):
             cells = []
             for j in range(n):
@@ -234,7 +242,7 @@ class QQGrid:
                     if st:
                         s += r"\sym{" + st + "}"
                 cells.append(s)
-            lines.append(fmt_q(self.row_q[i]) + " & " + " & ".join(cells) + r" \\")
+            lines.append(self._rl(i) + " & " + " & ".join(cells) + r" \\")
             if self.se is not None:
                 lines.append(" & " + " & ".join(f"({self.se[i, j]:.{self.decimals}f})" for j in range(n)) + r" \\")
         lines.append(r"\bottomrule")
@@ -276,9 +284,10 @@ class QQGrid:
             im = ax.imshow(self.values, origin="lower", cmap=cm, norm=norm, aspect="auto",
                            interpolation="nearest")
             ax.set_xticks(range(len(self.col_q)))
-            ax.set_xticklabels([fmt_q(q) for q in self.col_q], rotation=45 if len(self.col_q) > 10 else 0)
+            ax.set_xticklabels([self._cl(j) for j in range(len(self.col_q))],
+                               rotation=45 if len(self.col_q) > 10 else 0)
             ax.set_yticks(range(len(self.row_q)))
-            ax.set_yticklabels([fmt_q(q) for q in self.row_q])
+            ax.set_yticklabels([self._rl(i) for i in range(len(self.row_q))])
             ax.set_xlabel(self.col_label)
             ax.set_ylabel(self.row_label)
             for s in ax.spines.values():
