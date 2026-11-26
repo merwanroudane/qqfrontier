@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+title: "qqfrontier: frontier quantile-on-quantile econometrics in Python"
+message: "If you use this software, please cite it and the original papers of the methods you use."
+authors:
+  - family-names: Roudane
+    given-names: Merwan
+    email: merwanroudane920@gmail.com
+version: 0.1.0
+date-released: "2026-11-27"
+url: "https://github.com/merwanroudane/qqfrontier"
+repository-code: "https://github.com/merwanroudane/qqfrontier"
+license: MIT
+keywords: [quantile-on-quantile, connectedness, cross-quantilogram, quantile coherency, Granger causality, QARDL]
+references:
+  - type: article
+    authors: [{family-names: Gabauer, given-names: David}, {family-names: Stenfors, given-names: Alexis}]
+    title: "Quantile-on-quantile connectedness measures: Evidence from the US treasury yield curve"
+    journal: "Finance Research Letters"
+    year: 2024
+    doi: "10.1016/j.frl.2023.104852"
+  - type: article
+    authors: [{family-names: Han, given-names: Heejoon}, {family-names: Linton, given-names: Oliver}, {family-names: Oka, given-names: Tatsushi}, {family-names: Whang, given-names: Yoon-Jae}]
+    title: "The cross-quantilogram: Measuring quantile dependence and testing directional predictability between time series"
+    journal: "Journal of Econometrics"
+    year: 2016
+    doi: "10.1016/j.jeconom.2016.03.001"
+  - type: article
+    authors: [{family-names: Mayer, given-names: Alexander}, {family-names: Wied, given-names: Dominik}, {family-names: Troster, given-names: Victor}]
+    title: "Quantile Granger causality in the presence of instability"
+    journal: "Journal of Econometrics"
+    year: 2025
+    doi: "10.1016/j.jeconom.2025.105992"
+  - type: article
+    authors: [{family-names: Baruník, given-names: Jozef}, {family-names: Kley, given-names: Tobias}]
+    title: "Quantile coherency: A general measure for dependence between cyclical economic variables"
+    journal: "The Econometrics Journal"
+    year: 2019
+    doi: "10.1093/ectj/utz002"
+  - type: article
+    authors: [{family-names: Destek, given-names: Mehmet Akif}, {family-names: Radulescu, given-names: Magdalena}, {family-names: Ozkan, given-names: Oktay}, {family-names: Balsalobre-Lorente, given-names: Daniel}]
+    title: "The hidden cost of renewable energy: A quantile view for environmental management on critical metals"
+    journal: "Journal of Environmental Management"
+    year: 2025
+    doi: "10.1016/j.jenvman.2025.126089"

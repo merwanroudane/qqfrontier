@@ -77,7 +77,7 @@ def parula_colors(n: int = 256) -> List[str]:
     Examples
     --------
     >>> parula_colors(3)
-    ['#3E2699', '#13BDBF', '#F9FB15']
+    ['#3E26A8', '#12BEB9', '#F9FB15']
     """
     return _ramp(PARULA_STOPS, n)
 
@@ -134,7 +134,7 @@ def resolve_colorscale(name: Union[str, list] = "Parula", n_breaks: int = 32):
     Examples
     --------
     >>> resolve_colorscale("Parula", 2)
-    [[0.0, '#3E2699'], [1.0, '#F9FB15']]
+    [[0.0, '#3E26A8'], [1.0, '#F9FB15']]
     """
     if isinstance(name, list):
         return name

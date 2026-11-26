@@ -374,7 +374,15 @@ def rq_noncross(X: np.ndarray, y: np.ndarray, taus: Sequence[float],
         return _rq_noncross_joint(X, y, taus)
     if method != "ipm":
         raise ValueError("method must be 'ipm' or 'simplex'")
-    return _rq_noncross_ipm(X, y, taus, eps, max_it)
+    if np.ptp(X[:, 1:], axis=0).min(initial=1.0) <= 0:
+        return _rq_noncross_joint(X, y, taus)                 # constant regressor: degenerate box
+    try:
+        b = _rq_noncross_ipm(X, y, taus, eps, max_it)
+        if np.isfinite(b).all():
+            return b
+    except np.linalg.LinAlgError:
+        pass
+    return _rq_noncross_joint(X, y, taus)                     # robust fallback (exact simplex)
 
 
 def _rq_noncross_ipm(X, y, taus, eps=1e-8, max_it=200):

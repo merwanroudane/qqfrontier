@@ -11,3 +11,5 @@ dist/
 /*.zip
 _SOURCES_NEEDED.md
 _work/
+/*.tar.gz
+docs/assets/*.pdf

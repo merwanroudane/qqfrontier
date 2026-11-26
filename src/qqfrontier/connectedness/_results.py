@@ -23,7 +23,7 @@ import pandas as pd
 from .._grid import QQGrid
 from .._style import LINE_CYCLE, fmt_q, journal_style, latex_escape
 
-__all__ = ["QQConnResult", "decompose_tci"]
+__all__ = ["QQConnResult", "decompose_tci", "compare_heatmaps"]
 
 
 def _parse_dates(d: Sequence[str]):
@@ -508,3 +508,33 @@ def decompose_tci(gs_u: QQConnResult, gs_c: QQConnResult, qoq_u: QQConnResult,
                          np.nanmin(v), np.nanpercentile(v, 5), np.nanpercentile(v, 95), np.nanmax(v)))
     return pd.DataFrame(rows, columns=["Panel", "Component", "Mean", "MA", "Min", "P5", "P95", "Max"]
                         ).set_index(["Panel", "Component"]).round(2)
+
+
+def compare_heatmaps(measure: str = "TCI", series=0, ncols: int = 2, common_scale: bool = True,
+                     cmap: str = "Parula", figsize=None, **results):
+    """Side-by-side averaged heatmaps of several estimators on a common colour scale.
+
+    Layout of Bonaccolto, Caporin and Gupta (2026, Fig. 1). Pass results as keyword
+    arguments, e.g. ``compare_heatmaps(**{"(a) GS: second moments": gs_u, "(b) GS: covariance": gs_c})``.
+    Returns ``(fig, axes)``.
+    """
+    import matplotlib.pyplot as plt
+    if not results:
+        raise ValueError("pass at least one QQConnResult as a keyword argument")
+    grids = {k: r.grid(measure, series) for k, r in results.items()}
+    n = len(grids)
+    nrows = int(np.ceil(n / ncols))
+    vmin = min(np.nanmin(g.values) for g in grids.values())
+    vmax = max(np.nanmax(g.values) for g in grids.values())
+    with journal_style({"axes.grid": False}):
+        fig, axes = plt.subplots(nrows, ncols, figsize=figsize or (6.0 * ncols, 5.0 * nrows), squeeze=False)
+        for ax, (title, g) in zip(axes.flat, grids.items()):
+            g.heatmap(ax=ax, cmap=cmap, fontsize=5.5, colorbar=False)
+            if common_scale:
+                ax.images[0].set_clim(vmin, vmax)
+            ax.set_title(title)
+        for ax in list(axes.flat)[n:]:
+            ax.set_visible(False)
+        im = axes.flat[0].images[0]
+        fig.colorbar(im, ax=axes.ravel().tolist(), fraction=0.025, pad=0.02, label=list(grids.values())[0].value_label)
+    return fig, axes
