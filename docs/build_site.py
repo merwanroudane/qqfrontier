@@ -13,9 +13,9 @@ from pathlib import Path
 DOCS = Path(__file__).resolve().parent
 A = DOCS / "assets"
 T = A / "tables"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 REPO = "https://github.com/merwanroudane/qqfrontier"
-PYPI = "https://pypi.org/project/qqfrontier/"
+PYPI = "https://pypi.org/project/qqfrontier/0.1.0/"
 SITE = "https://merwanroudane.github.io/qqfrontier/"
 
 
@@ -101,7 +101,8 @@ with journal-quality tables, heatmaps and 3D surfaces.</p>
 <a class="btn ghost" href="https://github.com/merwanroudane/qqfrontier/blob/main/GUIDE.md">Step-by-step guide</a>
 <div class="author-line">By <b>Dr Merwan Roudane</b> · <a style="color:#fff;text-decoration:underline" href="mailto:merwanroudane920@gmail.com">merwanroudane920@gmail.com</a> · <a style="color:#fff;text-decoration:underline" href="https://github.com/merwanroudane">github.com/merwanroudane</a></div>
 </div></header>
-<main class="wrap">""")
+<main class="wrap"><section style="padding-top:34px"><a href="{PYPI}"><img src="assets/banner.png" alt="qqfrontier banner"
+ style="width:100%;border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--border)"></a></section>""")
 
 # modules
 parts.append("<section id='modules'><h2><span class='kick'>What it does</span>Five methods, one consistent interface</h2>"
@@ -281,7 +282,7 @@ bib = """@software{roudane2026qqfrontier,
   author  = {Roudane, Merwan},
   title   = {qqfrontier: Frontier Quantile-on-Quantile Econometrics in Python},
   year    = {2026},
-  version = {0.1.0},
+  version = {0.1.1},
   url     = {https://github.com/merwanroudane/qqfrontier}
 }"""
 parts.append(f"""<section id="author"><h2><span class="kick">Author</span>Dr Merwan Roudane</h2>

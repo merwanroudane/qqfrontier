@@ -322,7 +322,7 @@ def _self_normalized(y1, y2, t1, t2, p, x1, x2, hit, omega, rho_full):
     for pp in range(1, p + 1):
         rr = rho_full[:pp].transpose(1, 2, 0)                             # (m1, m2, pp)
         Vp = V[:, :, :pp, :pp]
-        sol = np.linalg.solve(Vp, rr[..., None])[..., 0]
+        sol = np.einsum("abij,abj->abi", np.linalg.pinv(Vp, hermitian=True), rr)
         S[pp - 1] = T * (rr * sol).sum(-1)
     return S
 
@@ -356,7 +356,7 @@ def partial_cross_quantilogram(y1, y2, controls, tau1: float, tau2: float, tau_z
     def stat(Dm):
         H = np.column_stack([_hits(Dm[:, j], [taus[j]], None, hit)[:, 0] for j in range(Dm.shape[1])])
         R = H.T @ H
-        P = np.linalg.inv(R)
+        P = np.linalg.pinv(R, hermitian=True)          # robust to repeated hits in a resample
         return R[0, 1] / np.sqrt(R[0, 0] * R[1, 1]), -P[0, 1] / np.sqrt(P[0, 0] * P[1, 1])
 
     rho, prt = stat(D)

@@ -1,0 +1,25 @@
+% Preamble: \newcommand{\sym}[1]{\ensuremath{^{#1}}}  \usepackage{booktabs}
+\begin{table}[htbp]\centering
+\caption{QQARDL long-run coefficients, Algeria}\label{tab:qqardl}
+\small
+\begin{tabular}{lccccccccccc}
+\toprule
+lnGDP quantile (theta) & \multicolumn{11}{c}{lnCO2 quantile (tau)} \\
+\cmidrule(lr){2-12}
+ & 0.05 & 0.10 & 0.20 & 0.30 & 0.40 & 0.50 & 0.60 & 0.70 & 0.80 & 0.90 & 0.95 \\
+\midrule
+0.95 & -1.833 & 0.075 & . & . & . & . & . & . & . & . & 1.531\sym{***} \\
+0.90 & -0.881 & 0.384 & 0.571\sym{*} & . & . & . & . & . & . & . & . \\
+0.80 & -0.767 & 0.537 & . & . & . & . & . & . & . & . & 1.503\sym{***} \\
+0.70 & 0.634 & 0.689\sym{**} & . & . & . & 0.844\sym{***} & 1.101\sym{***} & 1.235\sym{***} & 1.089\sym{***} & . & 0.983\sym{***} \\
+0.60 & 0.506 & 0.514\sym{*} & 0.462\sym{***} & . & 0.544\sym{***} & 0.631\sym{***} & 0.813\sym{***} & . & . & . & . \\
+0.50 & 0.642 & 0.560\sym{**} & 0.502\sym{***} & . & 0.615\sym{***} & 0.704\sym{***} & 0.836\sym{***} & . & . & . & . \\
+0.40 & 0.769 & 0.524\sym{*} & 0.579\sym{***} & 0.657\sym{***} & 0.662\sym{***} & . & . & . & . & . & . \\
+0.30 & 0.397 & 0.463\sym{*} & 0.458\sym{***} & 0.485\sym{***} & 0.498\sym{***} & 0.538\sym{**} & . & . & . & . & . \\
+0.20 & 0.848 & 0.638\sym{**} & 0.484\sym{***} & 0.582\sym{***} & 0.568\sym{***} & 0.629\sym{***} & 0.782\sym{***} & . & . & . & . \\
+0.10 & 1.316\sym{*} & 0.739\sym{***} & 0.427\sym{***} & 0.479\sym{**} & 0.482\sym{**} & . & . & . & . & . & . \\
+0.05 & 1.387\sym{***} & 0.606\sym{***} & . & . & . & . & . & . & . & . & . \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.95\linewidth}\footnotesize\textit{Notes:} Notes: rows: quantiles (theta) of lnGDP; columns: quantiles (tau) of lnCO2. Bounds test: Kripfganz-Schneider (2020) I(1) p-values; N = 53. Coefficients: t(50) with OLS standard errors; LR s.e. by the delta method. \sym{***} $p<0.01$, \sym{**} $p<0.05$, \sym{*} $p<0.10$.\end{minipage}
+\end{table}

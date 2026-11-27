@@ -168,7 +168,9 @@ def _sup_wald(Y, Z, W, taus, n_boot, rng):
     W_tau = np.empty(len(taus))
     for j in range(len(taus)):
         V = np.cov(gb[:, j, :].T).reshape(p, p)
-        W_tau[j] = g[j] @ np.linalg.solve(V, g[j])
+        # Moore-Penrose inverse: the bootstrap covariance can be singular at extreme quantiles of
+        # discrete (e.g. basis-point) data, where gamma*(tau) repeats across draws
+        W_tau[j] = float(g[j] @ np.linalg.pinv(V, rcond=1e-12, hermitian=True) @ g[j])
     return W_tau, g
 
 

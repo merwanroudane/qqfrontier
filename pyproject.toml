@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name            = "qqfrontier"
-version         = "0.1.0"
+version         = "0.1.1"
 description     = "Frontier quantile-on-quantile econometrics: QQ connectedness, cross-quantilogram, robust QQ causality, quantile coherency, QQARDL"
 readme          = "README.md"
 requires-python = ">=3.9"
@@ -41,6 +41,7 @@ dev    = ["pytest>=7", "pytest-cov", "build", "twine", "ruff", "plotly>=5.0", "n
 
 [project.urls]
 Homepage      = "https://merwanroudane.github.io/qqfrontier/"
+PyPI          = "https://pypi.org/project/qqfrontier/"
 Repository    = "https://github.com/merwanroudane/qqfrontier"
 Documentation = "https://merwanroudane.github.io/qqfrontier/"
 Issues        = "https://github.com/merwanroudane/qqfrontier/issues"

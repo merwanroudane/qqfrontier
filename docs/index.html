@@ -1,0 +1,320 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>qqfrontier — frontier quantile-on-quantile econometrics in Python</title>
+<meta name="description" content="qqfrontier: QQ connectedness, cross-quantilogram, robust quantile Granger causality, quantile coherency and QQARDL in Python. By Dr Merwan Roudane.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<div class="top"><div class="wrap"><span class="brand">qqfrontier</span>
+<nav class="nav"><a href="#modules">Modules</a><a href="#install">Install</a><a href="#theory">Theory</a>
+<a href="#example">Examples</a><a href="#api">Syntax</a><a href="#refs">References</a><a href="#author">Author</a>
+<a href="https://github.com/merwanroudane/qqfrontier">GitHub</a><a href="https://pypi.org/project/qqfrontier/0.1.0/">PyPI</a></nav></div></div>
+<header class="hero"><div class="wrap">
+<div class="pills"><span>v0.1.1</span><span>MIT licence</span><span>Python ≥ 3.9</span><span>5 modules</span><span>validated against R &amp; Stata</span></div>
+<h1>qqfrontier</h1>
+<p class="lead">Frontier quantile-on-quantile econometrics in Python: QQ connectedness, the cross-quantilogram,
+quantile Granger causality robust to instability, quantile coherency and the quantile-on-quantile ARDL —
+with journal-quality tables, heatmaps and 3D surfaces.</p>
+<div class="install"><span id="pipcmd">pip install "qqfrontier[full]"</span><button onclick="navigator.clipboard.writeText(document.getElementById('pipcmd').innerText)">copy</button></div><br>
+<a class="btn" href="https://github.com/merwanroudane/qqfrontier">GitHub repository</a><a class="btn" href="https://pypi.org/project/qqfrontier/0.1.0/">PyPI package</a>
+<a class="btn ghost" href="https://github.com/merwanroudane/qqfrontier/blob/main/GUIDE.md">Step-by-step guide</a>
+<div class="author-line">By <b>Dr Merwan Roudane</b> · <a style="color:#fff;text-decoration:underline" href="mailto:merwanroudane920@gmail.com">merwanroudane920@gmail.com</a> · <a style="color:#fff;text-decoration:underline" href="https://github.com/merwanroudane">github.com/merwanroudane</a></div>
+</div></header>
+<main class="wrap"><section style="padding-top:34px"><a href="https://pypi.org/project/qqfrontier/0.1.0/"><img src="assets/banner.png" alt="qqfrontier banner"
+ style="width:100%;border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--border)"></a></section>
+<section id='modules'><h2><span class='kick'>What it does</span>Five methods, one consistent interface</h2><p class='sub'>Every result object prints journal tables, exports LaTeX and Markdown, draws Parula heatmaps, static and interactive 3D surfaces, and writes a plain-language interpretation.</p><div class='grid g5'>
+<div class='card mod' style='--c:var(--m1)'><span class='tag'>M1</span><h4>Quantile-on-quantile connectedness</h4><p>Spillovers between quantiles of several markets: Gabauer–Stenfors (2024), kernel Q-on-Q-QVAR (2026), TVP-QQVAR (2026).</p></div>
+<div class='card mod' style='--c:var(--m2)'><span class='tag'>M2</span><h4>Cross-quantilogram</h4><p>Directional predictability between quantiles with stationary-bootstrap inference (Han, Linton, Oka & Whang, 2016).</p></div>
+<div class='card mod' style='--c:var(--m3)'><span class='tag'>M3</span><h4>Robust quantile Granger causality</h4><p>Causality in quantiles robust to structural breaks, with dated regimes (Mayer, Wied & Troster, 2025).</p></div>
+<div class='card mod' style='--c:var(--m4)'><span class='tag'>M4</span><h4>Quantile coherency</h4><p>Dependence between quantiles across short, medium and long cycles (Baruník & Kley, 2019).</p></div>
+<div class='card mod' style='--c:var(--m5)'><span class='tag'>M5</span><h4>Quantile-on-quantile ARDL</h4><p>Bounds test, long run, short run and ECT on quantile series (Destek et al., 2025).</p></div>
+</div></section>
+<section id="install"><h2><span class="kick">Installation</span>Install in one line</h2>
+<div class="grid g2"><div class="card"><pre><code class='language-python'>pip install qqfrontier            # core
+pip install &quot;qqfrontier[plotly]&quot;  # + interactive 3D surfaces
+pip install &quot;qqfrontier[fast]&quot;    # + numba / joblib acceleration
+pip install &quot;qqfrontier[full]&quot;    # everything (recommended)</code></pre></div><div class="card">
+<p>New to Python? Install <a href="https://www.anaconda.com/download">Anaconda</a>, open <b>Anaconda Prompt</b>
+and type the line above. The <a href="https://github.com/merwanroudane/qqfrontier/blob/main/GUIDE.md">step-by-step guide</a>
+shows how to load your own Excel or CSV file and write every line of code.</p>
+<div class="note">Requirements: numpy, scipy, pandas, matplotlib, statsmodels (installed automatically).
+Bounds-test p-values of M5 use the Kripfganz–Schneider (2020) critical values (case III), shipped with the package, as in Destek et al. (2025).</div>
+</div></div></section>
+<section id="theory"><h2><span class="kick">Theory</span>The five estimators in brief</h2>
+<div class="grid g2 theory">
+<div class="card mod" style="--c:var(--m1)"><span class="tag">M1</span><h4>QQ connectedness</h4>
+Each equation of the QVAR is estimated at its own quantile, \(Q_{\tau_j}(y_{jt}\mid y_{t-1}) = c_j(\tau_j) + A_j(\tau_j) y_{t-1}\).
+The generalized FEVD
+$$\theta_{ij}(H)=\frac{\sigma_{jj}^{-1}\sum_{h=0}^{H-1}(e_i'\Psi_h\Sigma e_j)^2}{\sum_j \sigma_{jj}^{-1}\sum_{h}(e_i'\Psi_h\Sigma e_j)^2}$$
+gives TO, FROM, NET and the adjusted total connectedness \(TCI=\tfrac{k}{k-1}\overline{TO}\) for every quantile configuration \((\tau_1,\tau_2)\).</div>
+<div class="card mod" style="--c:var(--m2)"><span class="tag">M2</span><h4>Cross-quantilogram</h4>
+$$\hat\rho_\tau(k)=\frac{\sum_{t}\psi_{\tau_1}(y_{1t}-\hat q_{1t})\,\psi_{\tau_2}(y_{2,t-k}-\hat q_{2,t-k})}{\sqrt{\sum_t\psi^2_{\tau_1}}\sqrt{\sum_t\psi^2_{\tau_2}}},\qquad \psi_a(u)=\mathbb 1[u<0]-a$$
+with the Box–Ljung test \(\check Q^{(p)}_\tau=T(T+2)\sum_{k\le p}\hat\rho_\tau^2(k)/(T-k)\) and stationary-bootstrap critical values.</div>
+<div class="card mod" style="--c:var(--m3)"><span class="tag">M3</span><h4>Robust quantile Granger causality</h4>
+From the subgradient \(H_n(\lambda,\tau)=(X'X/n)^{-1/2}n^{-1/2}\sum_{i\le\lambda n}x_i\psi_\tau(y_i-w_i'\hat\alpha(\tau))\):
+$$\mathrm{expLM}=\int_{\mathcal T}\exp\Big[\tfrac12\Big(\sup_\lambda\big\|R'(H_n(\lambda)-\lambda H_n(1))\big\|_\infty+\|R'H_n(1)\|_\infty\Big)\Big]d\tau$$
+jointly tests no causality and parameter stability.</div>
+<div class="card mod" style="--c:var(--m4)"><span class="tag">M4</span><h4>Quantile coherency</h4>
+$$R(\omega;\tau_1,\tau_2)=\frac{f_{12}(\omega;\tau_1,\tau_2)}{\sqrt{f_{11}(\omega;\tau_1,\tau_1)f_{22}(\omega;\tau_2,\tau_2)}}$$
+estimated from smoothed rank-based copula cross-periodograms, with pointwise confidence intervals.</div>
+<div class="card mod" style="--c:var(--m5)"><span class="tag">M5</span><h4>QQARDL</h4>
+On the quantile series of Li (2022), \(\Delta Y_t=a_0+d_0Y_{t-1}+d_1\Delta X_t+b_1X_{t-1}+e_t\) for every pair \((\tau,\theta)\):
+bounds test of \(g_1=g_2=0\), long run \(-b_1/d_0\), short run \(d_1\), error correction \(d_0\).</div>
+<div class="card"><h4>Faithful to the papers</h4><p>Every code step is mapped to the equation it implements in
+<a href="https://github.com/merwanroudane/qqfrontier/blob/main/docs/methods.md">docs/methods.md</a>. M1 reproduces the R package
+<i>qqconnect</i> and Fig. 1(a) of Bonaccolto et al. (2026) cell by cell; M2 equals <i>quantilogram</i>; M5 reproduces the Stata command
+<i>qqardl</i> table by table.</p></div>
+</div></section>
+<section id='example'><h2><span class='kick'>Complete applications on real data</span>Every table and figure, generated by one script</h2><p class='sub'>Data shipped with the package: daily FRED changes of the US 2-year Treasury yield (US2Y) and the 10Y–2Y spread (US2Y10Y), 1998–2023 (public domain); World Bank WDI CO₂ and GDP per capita of Algeria and Egypt (CC BY 4.0). Script: <a href='https://github.com/merwanroudane/qqfrontier/blob/main/examples/qqfrontier_empirical.py'>examples/qqfrontier_empirical.py</a>.</p>
+<h3>Summary statistics</h3><pre><code class='language-python'>import qqfrontier as qf
+yl = qf.load_us_yields(main_only=True)
+print(qf.descriptive_table(yl[[&quot;US2Y&quot;, &quot;US2Y10Y&quot;]]))</code></pre><pre class='out'>======================================================================================================================
+                                                  Summary statistics                                                  
+======================================================================================================================
+                       Mean     Variance     Skewness  Ex.Kurtosis           JB          ERS        Q(20)       Q2(20)
+----------------------------------------------------------------------------------------------------------------------
+US2Y                 -0.009       29.550    -0.413***     8.926*** 20935.593***    -9.490***    27.299***  1558.579***
+US2Y10Y              -0.015       15.069     0.315***     6.259*** 10311.451***    -8.881***    23.535***   680.318***
+----------------------------------------------------------------------------------------------------------------------
+Unconditional correlations
+US2Y                  1.000       -0.253
+US2Y10Y              -0.253        1.000
+======================================================================================================================
+Notes: *** p&lt;0.01, ** p&lt;0.05, * p&lt;0.10. Skewness: D&#x27;Agostino (1970) test; Ex.Kurtosis:
+Anscombe-Glynn (1983) test; JB: Jarque-Bera (1980); ERS: unit-root test with
+a constant; Q(20) and Q2(20): Fisher-Gallagher (2012) weighted portmanteau
+tests on the series and on their squares.</pre>
+<h3 class='mtitle' style='--c:var(--m1)'><span class='tag'>M1</span> Quantile-on-quantile connectedness</h3><pre><code class='language-python'>x = yl[[&quot;date&quot;, &quot;US2Y&quot;, &quot;US2Y10Y&quot;]]
+taus = np.arange(0.05, 1.0, 0.10)
+gs  = qf.qqc_gs(x, taus=taus, window=200, horizon=20)                  # Gabauer &amp; Stenfors (2024)
+qoq = qf.qqc_kernel(qf.load_us_yields()[[&quot;date&quot;,&quot;US2Y&quot;,&quot;US2Y10Y&quot;]], taus=taus,
+                    window=200, horizon=20, bandwidth=0.15, presample=100, n_jobs=8)   # BCG (2026)
+tvp = qf.qqc_tvp(x, taus=taus, horizon=30)                               # TVP-QQVAR (2026)
+print(gs.summary()); print(gs.interpret())
+gs.plot(&quot;heatmap&quot;); gs.plot(&quot;dynamic&quot;); gs.plot(&quot;net&quot;); gs.plot(&quot;surface&quot;); gs.plot(&quot;panel&quot;)</code></pre>
+<div class='tbl'><table><thead><tr><th>US2Y quantile \ US2Y10Y quantile</th><th>0.05</th><th>0.15</th><th>0.25</th><th>0.35</th><th>0.45</th><th>0.55</th><th>0.65</th><th>0.75</th><th>0.85</th><th>0.95</th></tr></thead><tbody><tr><td>0.95</td><td>71.6</td><td>56.6</td><td>40.7</td><td>24.4</td><td>11.3</td><td>9.5</td><td>17.2</td><td>30.3</td><td>49.3</td><td>66.8</td></tr><tr><td>0.85</td><td>56.4</td><td>45.2</td><td>33.7</td><td>22.3</td><td>12.9</td><td>11.1</td><td>14.4</td><td>21.4</td><td>33.7</td><td>47.7</td></tr><tr><td>0.75</td><td>40.9</td><td>33.9</td><td>27.0</td><td>20.4</td><td>14.7</td><td>13.4</td><td>14.1</td><td>16.6</td><td>22.7</td><td>31.2</td></tr><tr><td>0.65</td><td>22.9</td><td>22.1</td><td>20.6</td><td>18.8</td><td>16.5</td><td>15.4</td><td>13.9</td><td>12.3</td><td>11.9</td><td>13.4</td></tr><tr><td>0.55</td><td>12.0</td><td>14.2</td><td>15.7</td><td>16.8</td><td>17.0</td><td>16.6</td><td>15.1</td><td>12.7</td><td>9.8</td><td>7.4</td></tr><tr><td>0.45</td><td>7.2</td><td>9.4</td><td>11.8</td><td>14.2</td><td>16.3</td><td>17.2</td><td>17.0</td><td>15.9</td><td>13.7</td><td>10.6</td></tr><tr><td>0.35</td><td>13.8</td><td>12.0</td><td>12.1</td><td>12.9</td><td>15.4</td><td>16.8</td><td>18.8</td><td>20.8</td><td>22.5</td><td>23.1</td></tr><tr><td>0.25</td><td>30.2</td><td>22.2</td><td>17.0</td><td>13.4</td><td>14.0</td><td>15.2</td><td>19.9</td><td>26.2</td><td>34.1</td><td>40.7</td></tr><tr><td>0.15</td><td>46.8</td><td>33.2</td><td>22.6</td><td>14.1</td><td>11.9</td><td>13.2</td><td>21.4</td><td>32.7</td><td>46.0</td><td>57.2</td></tr><tr><td>0.05</td><td>64.9</td><td>47.5</td><td>31.3</td><td>17.0</td><td>9.9</td><td>11.3</td><td>23.7</td><td>40.1</td><td>58.5</td><td>73.0</td></tr></tbody></table></div>
+<div class='interp'><b>Reading the results.</b> Averaged dynamic quantile-on-quantile total connectedness: the surface averages 24.3 over 100 quantile pairs (range 7.2 to 73.0). The largest value (73.0) occurs when US2Y quantile is at its 0.05 quantile and US2Y10Y quantile at its 0.95 quantile; the smallest (7.2) at (0.45, 0.05). Values in the joint tails (average 40.3) are stronger than around the joint median (average 16.2), pointing to tail-dependent (asymmetric) behaviour. On average, reversely related (opposite-tail) quantile pairs dominate (reverse 36.1 vs direct 29.2). Over time, reversely related quantiles exceed directly related ones on 54.8% of the dates (mean difference 6.88 points, 5th-95th percentile range -21.49 to 36.66). US2Y is the net transmitter of shocks in 69% of the quantile configurations. US2Y10Y is the net transmitter of shocks in 31% of the quantile configurations. The strongest net position of US2Y (+3.0%) arises at (0.95, 0.65), where it is a net transmitter.</div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m1_gs_heatmap.png' alt='Averaged dynamic quantile-on-quantile TCI (GS 2024, Fig. 2 layout).'><figcaption>Averaged dynamic quantile-on-quantile TCI (GS 2024, Fig. 2 layout).</figcaption></figure><figure><img loading='lazy' src='assets/m1_gs_dynamic.png' alt='Reverse, direct and ΔTCI over time (GS 2024, Fig. 3).'><figcaption>Reverse, direct and ΔTCI over time (GS 2024, Fig. 3).</figcaption></figure></div>
+<figure><img loading='lazy' src='assets/m1_gs_panel.png' alt='Heatmap, 3D surface and contour of the averaged TCI.'><figcaption>Heatmap, 3D surface and contour of the averaged TCI.</figcaption></figure>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m1_gs_surface3d.png' alt='3D surface of the averaged TCI (Parula).'><figcaption>3D surface of the averaged TCI (Parula).</figcaption></figure><figure><img loading='lazy' src='assets/m1_gs_net.png' alt='NET connectedness of each series (blue: receiver, red: transmitter).'><figcaption>NET connectedness of each series (blue: receiver, red: transmitter).</figcaption></figure></div>
+<figure><iframe class='plotly' src='assets/m1_gs_surface.html' title='Interactive 3D TCI surface'></iframe><figcaption>Interactive 3D surface: drag to rotate, hover for values.</figcaption></figure>
+<figure><img loading='lazy' src='assets/m1_compare_bcg_fig1.png' alt='GS vs Q-on-Q, second moments vs covariance (Bonaccolto, Caporin &amp; Gupta 2026, Fig. 1 layout).'><figcaption>GS vs Q-on-Q, second moments vs covariance (Bonaccolto, Caporin & Gupta 2026, Fig. 1 layout).</figcaption></figure>
+<h4>Decomposition of TCI differences (BCG 2026, Table A.2)</h4><div class='tbl'><table><thead><tr><th></th><th>Mean</th><th>MA</th><th>Min</th><th>P5</th><th>P95</th><th>Max</th></tr></thead><tbody><tr><td>(&#x27;Direct TCI&#x27;, &#x27;Total difference&#x27;)</td><td>-8.52</td><td>14.87</td><td>-28.37</td><td>-24.56</td><td>20.38</td><td>27.94</td></tr><tr><td>(&#x27;Direct TCI&#x27;, &#x27;(3) Method&#x27;)</td><td>2.56</td><td>3.42</td><td>-6.21</td><td>-2.76</td><td>9.81</td><td>17.24</td></tr><tr><td>(&#x27;Direct TCI&#x27;, &#x27;(3) Centering&#x27;)</td><td>-11.08</td><td>17.92</td><td>-30.45</td><td>-27.37</td><td>23.03</td><td>31.27</td></tr><tr><td>(&#x27;Direct TCI&#x27;, &#x27;(4) Method&#x27;)</td><td>2.55</td><td>4.95</td><td>-11.55</td><td>-6.78</td><td>8.95</td><td>19.21</td></tr><tr><td>(&#x27;Direct TCI&#x27;, &#x27;(4) Centering&#x27;)</td><td>-11.08</td><td>16.49</td><td>-34.54</td><td>-30.86</td><td>12.28</td><td>22.32</td></tr><tr><td>(&#x27;Reverse TCI&#x27;, &#x27;Total difference&#x27;)</td><td>-14.98</td><td>15.04</td><td>-27.53</td><td>-24.3</td><td>-2.54</td><td>4.07</td></tr><tr><td>(&#x27;Reverse TCI&#x27;, &#x27;(3) Method&#x27;)</td><td>3.02</td><td>3.37</td><td>-6.22</td><td>-1.13</td><td>9.15</td><td>17.67</td></tr><tr><td>(&#x27;Reverse TCI&#x27;, &#x27;(3) Centering&#x27;)</td><td>-18</td><td>18.04</td><td>-29.69</td><td>-27.02</td><td>-3.16</td><td>5.03</td></tr><tr><td>(&#x27;Reverse TCI&#x27;, &#x27;(4) Method&#x27;)</td><td>1.22</td><td>4.15</td><td>-13.19</td><td>-6.66</td><td>7.28</td><td>11.99</td></tr><tr><td>(&#x27;Reverse TCI&#x27;, &#x27;(4) Centering&#x27;)</td><td>-16.2</td><td>16.55</td><td>-32</td><td>-28.32</td><td>1.34</td><td>10.95</td></tr></tbody></table></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m1_gs_time_heatmap.png' alt='Reversely related quantiles: TCI over time.'><figcaption>Reversely related quantiles: TCI over time.</figcaption></figure><figure><img loading='lazy' src='assets/m1_tvp_dynamic.png' alt='TVP-QQVAR: reverse vs direct TCI.'><figcaption>TVP-QQVAR: reverse vs direct TCI.</figcaption></figure></div>
+<h3 class='mtitle' style='--c:var(--m2)'><span class='tag'>M2</span> Cross-quantilogram: does the 2-year yield predict the spread?</h3><pre><code class='language-python'>y1 = yl.set_index(&quot;date&quot;)[&quot;US2Y10Y&quot;]; y2 = yl.set_index(&quot;date&quot;)[&quot;US2Y&quot;]
+cq = qf.cross_quantilogram_test(y1, y2, tau1=[.05,.1,.2,.3,.5,.7,.8,.9,.95], tau2=[.1,.9],
+                                max_lag=20, n_boot=1000, sup_range=np.arange(.10,.31,.02), seed=1)
+print(cq.summary()); cq.plot(&quot;correlogram&quot;, tau2=0.10); cq.plot(&quot;heatmap&quot;, k=1)</code></pre>
+<div class='tbl'><table><thead><tr><th>tau1</th><th>k=1</th><th>k=2</th><th>k=3</th><th>k=5</th><th>k=10</th><th>k=20</th></tr></thead><tbody><tr><td>0.05</td><td>0.036</td><td>0.039<sup>*</sup></td><td>0.036</td><td>0.043<sup>*</sup></td><td>0.018</td><td>0.033</td></tr><tr><td>0.10</td><td>0.030</td><td>0.028</td><td>0.038</td><td>0.046<sup>*</sup></td><td>0.010</td><td>0.026<sup>*</sup></td></tr><tr><td>0.20</td><td>0.030</td><td>0.038<sup>*</sup></td><td>0.048<sup>*</sup></td><td>0.058<sup>*</sup></td><td>0.023<sup>*</sup></td><td>0.028<sup>*</sup></td></tr><tr><td>0.30</td><td>0.033</td><td>0.026</td><td>0.031</td><td>0.046<sup>*</sup></td><td>0.049<sup>*</sup></td><td>0.017</td></tr><tr><td>0.50</td><td>0.002</td><td>0.008</td><td>0.007</td><td>0.014</td><td>0.001</td><td>0.018</td></tr><tr><td>0.70</td><td>0.008</td><td>0.015</td><td>0.002</td><td>0.021</td><td>0.001</td><td>0.006</td></tr><tr><td>0.80</td><td>-0.019</td><td>-0.016</td><td>-0.018</td><td>0.005</td><td>-0.029</td><td>-0.015</td></tr><tr><td>0.90</td><td>-0.007</td><td>-0.021</td><td>-0.021</td><td>0.001</td><td>-0.021</td><td>-0.023</td></tr><tr><td>0.95</td><td>-0.022</td><td>-0.036</td><td>-0.027<sup>*</sup></td><td>-0.022</td><td>-0.026<sup>*</sup></td><td>-0.026<sup>*</sup></td></tr></tbody></table></div>
+<div class='interp'><b>Reading the results.</b> At lag 1, 38% of the 100 quantile pairs show significant directional predictability from US2Y to US2Y10Y (5% level). The strongest effect is rho = 0.072 at (tau1 = 0.85, tau2 = 0.55): when US2Y is below its 0.55 quantile, the probability that US2Y10Y falls below its 0.85 quantile 1 period(s) later is higher than unconditionally (equivalently, an exceedance of that quantile makes the event less likely). Significant positive values: 38, negative: 0. The Box-Ljung test up to lag 5 rejects &#x27;no predictability&#x27; for 44% of the quantile pairs.</div>
+<figure><img loading='lazy' src='assets/m2_correlogram_tau2_010.png' alt='Cross-quantilogram with the 95% bootstrap band for no predictability (HLOW Fig. 2a layout).'><figcaption>Cross-quantilogram with the 95% bootstrap band for no predictability (HLOW Fig. 2a layout).</figcaption></figure>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m2_portmanteau_tau2_010.png' alt='Box–Ljung Q(p) and bootstrap critical values.'><figcaption>Box–Ljung Q(p) and bootstrap critical values.</figcaption></figure><figure><img loading='lazy' src='assets/m2_sup.png' alt='Sup-Box–Ljung test over τ ∈ [0.10, 0.30].'><figcaption>Sup-Box–Ljung test over τ ∈ [0.10, 0.30].</figcaption></figure></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m2_heatmap_lag1.png' alt='Quantile-on-quantile map of the cross-quantilogram at lag 1 (stars: bootstrap p-values).'><figcaption>Quantile-on-quantile map of the cross-quantilogram at lag 1 (stars: bootstrap p-values).</figcaption></figure><figure><img loading='lazy' src='assets/m2_lag_surface.png' alt='3D surface over lag × τ₁.'><figcaption>3D surface over lag × τ₁.</figcaption></figure></div>
+<h3 class='mtitle' style='--c:var(--m3)'><span class='tag'>M3</span> Quantile Granger causality robust to instability</h3><pre><code class='language-python'>gc = qf.qgc_instability(y1, y2, lags=1, n_boot=499, seed=3, alpha=0.10)
+print(gc.summary()); gc.plot(&quot;cusum&quot;); gc.plot(&quot;lm&quot;); gc.plot(&quot;cusum_map&quot;)
+print(qf.qgc_table(y1, y2, lags=(1, 3, 6), n_boot=249))      # MWT Table 3 layout</code></pre>
+<pre class='out'>============================================================================================
+                      Quantile Granger Causality Robust to Instability                      
+                              (Mayer, Wied and Troster, 2025)                               
+============================================================================================
+H0: US2Y does not Granger-cause US2Y10Y in quantiles, with stable effect
+Lags of cause (q)         : 1                Observations        : 6252
+Regressors in w (incl. 1) : 2                Sample              : 1998-07-15 to 2023-07-11
+Critical values           : bootstrap (B=499)Quantile grid       : 0.05-0.95 (91 points)
+--------------------------------------------------------------------------------------------
+Quantile range         supWald   p-value         expLM   p-value       supLM   p-value
+--------------------------------------------------------------------------------------------
+[0.05, 0.95]            21.117  0.000***         1.664  0.012**        1.690  0.080*  
+[0.05, 0.20]             1.662  0.553            0.200  0.359          0.757  0.513   
+[0.40, 0.60]            21.117  0.000***         0.405  0.040**        1.674  0.056*  
+[0.80, 0.95]             8.284  0.018**          0.295  0.000***       1.654  0.004***
+--------------------------------------------------------------------------------------------
+LM(tau) at selected quantiles
+--------------------------------------------------------------------------------------------
+     tau     LM(tau)     sup LM1         LM2     p-value     p (asy)
+--------------------------------------------------------------------------------------------
+    0.05       2.434       0.298       0.233    0.130          0.106
+    0.10       1.672       0.247       0.254    0.487          0.406
+    0.25       1.578       0.233       0.451    0.503          0.464
+    0.50       3.189       0.644       0.950    0.022**        0.022
+    0.75       2.800       0.445       0.768    0.054*         0.058
+    0.90       4.547       0.381       0.983    0.000***       0.001
+    0.95       4.331       0.320       0.624    0.000***       0.002
+--------------------------------------------------------------------------------------------
+Regimes of Granger causality (Algorithm 2, Sidak-corrected levels)
+--------------------------------------------------------------------------------------------
+  1998-07-15 -&gt; 2023-07-11  ( 6252 obs.)   GC: yes             expLM p = 0.012
+  Step 1: expLM p = 0.012 &lt;= 0.1: reject H0.
+  Step 2: expCUSUM p = 0.159 &gt; 0.0513: stable Granger causality on the whole sample.
+============================================================================================
+Significance: *** p&lt;0.01, ** p&lt;0.05, * p&lt;0.10. supLM/expLM: MWT Eq. (8); supWald: Koenker and
+Machado (1999) with pairs-bootstrap covariance; LM(tau) = h(tau)(sup LM1 + LM2), Sec. 3.1.</pre>
+<h4>p-values (%) by lag order and quantile range (MWT 2025, Table 3 layout)</h4><div class='tbl'><table><thead><tr><th></th><th>[0.05, 0.95] supWald</th><th>[0.05, 0.95] expLM</th><th>[0.05, 0.95] supLM</th><th>[0.05, 0.20] supWald</th><th>[0.05, 0.20] expLM</th><th>[0.05, 0.20] supLM</th><th>[0.40, 0.60] supWald</th><th>[0.40, 0.60] expLM</th><th>[0.40, 0.60] supLM</th><th>[0.80, 0.95] supWald</th><th>[0.80, 0.95] expLM</th><th>[0.80, 0.95] supLM</th></tr></thead><tbody><tr><td>q = 1</td><td>0</td><td>1.205</td><td>4.418</td><td>63.05</td><td>36.145</td><td>53.414</td><td>0</td><td>4.418</td><td>3.614</td><td>1.1</td><td>0</td><td>0</td></tr><tr><td>q = 3</td><td>20.725</td><td>6.426</td><td>34.137</td><td>50</td><td>26.104</td><td>57.43</td><td>37.425</td><td>22.088</td><td>37.751</td><td>7</td><td>0.402</td><td>2.811</td></tr><tr><td>q = 6</td><td>27.825</td><td>27.711</td><td>53.815</td><td>73.675</td><td>50.201</td><td>62.651</td><td>35.175</td><td>46.988</td><td>41.365</td><td>10.025</td><td>0.803</td><td>6.827</td></tr></tbody></table></div>
+<div class='interp'><b>Reading the results.</b> Over the quantile range [0.05, 0.95], the expLM test rejects the joint null of no and stable Granger causality from US2Y to US2Y10Y in quantiles (p = 0.012); supLM gives p = 0.080. The conventional supWald test, which ignores instability, gives p = 0.000. Causality is detected in the ranges [0.40, 0.60], [0.80, 0.95]. Quantile by quantile, LM(tau) is significant at 5% for 42 of 91 levels (from 0.22 to 0.95). The instability component (sup LM1) dominates the causality component (LM2) at 5% of the quantiles, so the rejection is driven mainly by a stable non-zero effect.</div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m3_cusum.png' alt='CUSUM detector with break dates; Granger-causality regimes shaded (MWT Fig. 2).'><figcaption>CUSUM detector with break dates; Granger-causality regimes shaded (MWT Fig. 2).</figcaption></figure><figure><img loading='lazy' src='assets/m3_lm_tau.png' alt='LM(τ) and its instability and causality components.'><figcaption>LM(τ) and its instability and causality components.</figcaption></figure></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m3_cusum_map.png' alt='Time × quantile map of the instability detector.'><figcaption>Time × quantile map of the instability detector.</figcaption></figure><figure><img loading='lazy' src='assets/m3_coefficients.png' alt='Quantile Granger coefficients γ(τ).'><figcaption>Quantile Granger coefficients γ(τ).</figcaption></figure></div>
+<h3 class='mtitle' style='--c:var(--m4)'><span class='tag'>M4</span> Quantile coherency</h3><pre><code class='language-python'>coh = qf.quantile_coherency(yl[&quot;US2Y&quot;], yl[&quot;US2Y10Y&quot;], taus=np.arange(.05,.96,.05),
+                            periods={&quot;W&quot;: 5, &quot;M&quot;: 22, &quot;Y&quot;: 250})
+print(coh.summary()); coh.plot(&quot;frequency&quot;); coh.plot(&quot;quantile&quot;); coh.plot(&quot;surface&quot;, period=&quot;M&quot;)</code></pre>
+<pre class='out'>====================================================================================
+                    Quantile Coherency (Barunik and Kley, 2019)                     
+====================================================================================
+Series j1 / j2     : US2Y / US2Y10Y
+Observations       : 6253           Kernel / bandwidth : epanechnikov / 0.0562
+Quantile levels    : 19 x 19      Frequencies       : 3126
+------------------------------------------------------------------------------------
+Real part of quantile coherency by period (columns) and quantile pair (rows)
+------------------------------------------------------------------------------------
+   tau1|tau2         W (5)        M (22)       Y (250)     Short (2)
+------------------------------------------------------------------------------------
+   0.05|0.05         0.034         0.003        0.268*         0.023
+   0.10|0.10         0.004        -0.059        0.193*       -0.128*
+   0.50|0.50         0.018        -0.069        -0.107         0.036
+   0.90|0.90        -0.035        -0.029        0.170*        -0.109
+   0.95|0.95        -0.008         0.011        0.317*        -0.084
+   0.05|0.95       -0.156*       -0.183*       -0.408*       -0.180*
+   0.95|0.05       -0.091*       -0.097*       -0.341*       -0.183*
+====================================================================================
+* the pointwise CI of Re R excludes zero.
+Notes: rank-based quantile coherency (Barunik and Kley, 2019); n = 6253; epanechnikov kernel, b_n = 0.0562; 95% pointwise CIs (Supp. S5.2); stars: CI of Re R excludes zero.</pre>
+<div class='interp'><b>Reading the results.</b> At the W period (5), coherency between the lower tails (-0.00) is stronger than between the upper tails (-0.03), i.e. downside co-movement dominates. At the M period (22), coherency between the lower tails (-0.02) is weaker than between the upper tails (-0.01). At the Y period (250), coherency between the lower tails (0.20) is weaker than between the upper tails (0.20). For the 0.05|0.05 pair, Re R moves from 0.02 at the shortest cycle (2 periods) to 0.27 at the longest named period, so long-run cycles are more strongly connected in the tails. The opposite-tail pair 0.05|0.95 has Re R = -0.41 at the longest period (negative: a low US2Y tends to coincide with a high US2Y10Y over those cycles).</div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m4_frequency_diag.png' alt='Re R across frequencies with 95% CIs; top axis: weekly, monthly, yearly (BK Fig. 3).'><figcaption>Re R across frequencies with 95% CIs; top axis: weekly, monthly, yearly (BK Fig. 3).</figcaption></figure><figure><img loading='lazy' src='assets/m4_quantile.png' alt='Re R along τ₁ = τ₂ at fixed periods (BK Fig. 3, right).'><figcaption>Re R along τ₁ = τ₂ at fixed periods (BK Fig. 3, right).</figcaption></figure></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m4_heatmap_monthly.png' alt='Quantile-on-quantile coherency at the monthly period.'><figcaption>Quantile-on-quantile coherency at the monthly period.</figcaption></figure><figure><img loading='lazy' src='assets/m4_surface_monthly.png' alt='3D surface of the monthly coherency.'><figcaption>3D surface of the monthly coherency.</figcaption></figure></div>
+<figure><img loading='lazy' src='assets/m4_freq_surface.png' alt='3D surface over frequency × quantile.'><figcaption>3D surface over frequency × quantile.</figcaption></figure>
+<h3 class='mtitle' style='--c:var(--m5)'><span class='tag'>M5</span> Quantile-on-quantile ARDL: CO₂ and growth in Algeria</h3><pre><code class='language-python'>d = qf.load_wdi_co2_gdp(&quot;Algeria&quot;).set_index(&quot;year&quot;)
+r = qf.qqardl_fit(d[&quot;lnCO2&quot;], d[&quot;lnGDP&quot;])
+print(r.summary()); r.plot(&quot;heatmap&quot;, stat=&quot;lr&quot;); r.plot(&quot;surface&quot;, stat=&quot;lr&quot;); r.plot(&quot;coint&quot;)</code></pre>
+<pre class='out'>------------------------------------------------------------------------------------------------------------------------
+Quantile-on-Quantile ARDL (QQARDL)              Number of obs   =     53
+Destek et al. (2025); QSER of Li (2022)         ARDL order      = (1,1)
+Dependent: lnCO2   Regressor: lnGDP             Quantile pairs  =    121   Sample: 1970-2024
+------------------------------------------------------------------------------------------------------------------------
+
+Bounds test F-statistic, Eq. (1) (H0: no cointegration)
+theta|tau       0.05      0.10      0.20      0.30      0.40      0.50      0.60      0.70      0.80      0.90      0.95
+------------------------------------------------------------------------------------------------------------------------
+     0.95  42.775*** 14.646***     4.259     3.445     4.069     3.731     2.927     2.749     2.857     1.858    4.936*
+     0.90  44.935*** 13.423***    4.989*     3.567     4.475     3.951     3.685     3.473     1.732     0.985     4.855
+     0.80  30.036*** 12.660***     4.581     3.031     3.832     3.595     3.429     2.935     3.074     0.644    5.458*
+     0.70  40.653*** 13.414***     4.171     2.629     4.121    5.260*   8.216**    5.022*    5.060*     3.696   7.139**
+     0.60  38.934*** 12.601***   6.047**     4.402   6.240**   6.529**   8.166**     2.796     3.299     2.325     0.794
+     0.50  37.163*** 13.839***    4.944*     4.117  8.694***   7.028**  9.082***     2.505     1.969     2.723     2.634
+     0.40  36.210*** 14.345***   8.026**  8.796***   7.131**     4.578     4.643     1.741     2.235     2.605     1.666
+     0.30  38.503*** 13.794***  8.755***   6.841**   7.147**    5.234*     4.723     2.101     1.931     1.881     1.855
+     0.20  36.609*** 14.502***  9.521***  8.918***   6.687**   6.043**    5.702*     3.037     2.235     1.996     1.953
+     0.10  35.985*** 19.243*** 11.694***   7.347**   6.848**     4.802     3.262     1.931     1.802     1.023     2.198
+     0.05  38.599*** 16.394***     3.336     2.721     2.736     2.567     1.837     1.517     1.192     0.420     1.552
+
+Long-run coefficient  LR = -b1/d0  [cointegrated pairs only]
+theta|tau       0.05      0.10      0.20      0.30      0.40      0.50      0.60      0.70      0.80      0.90      0.95
+------------------------------------------------------------------------------------------------------------------------
+     0.95     -1.833     0.075         .         .         .         .         .         .         .         .  1.531***
+     0.90     -0.881     0.384    0.571*         .         .         .         .         .         .         .         .
+     0.80     -0.767     0.537         .         .         .         .         .         .         .         .  1.503***
+     0.70      0.634   0.689**         .         .         .  0.844***  1.101***  1.235***  1.089***         .  0.983***
+     0.60      0.506    0.514*  0.462***         .  0.544***  0.631***  0.813***         .         .         .         .
+     0.50      0.642   0.560**  0.502***         .  0.615***  0.704***  0.836***         .         .         .         .
+     0.40      0.769    0.524*  0.579***  0.657***  0.662***         .         .         .         .         .         .
+     0.30      0.397    0.463*  0.458***  0.485***  0.498***   0.538**         .         .         .         .         .
+     0.20      0.848   0.638**  0.484***  0.582***  0.568***  0.629***  0.782***         .         .         .         .
+     0.10     1.316*  0.739***  0.427***   0.479**   0.482**         .         .         .         .         .         .
+     0.05   1.387***  0.606***         .         .         .         .         .         .         .         .         .
+
+Short-run coefficient d1 on D.x (Eq. 4)
+theta|tau       0.05      0.10      0.20      0.30      0.40      0.50      0.60      0.70      0.80      0.90      0.95
+------------------------------------------------------------------------------------------------------------------------
+     0.95     4.517*   1.914**    0.545*     0.347     0.453    0.600*    0.625*  0.831***  1.839***     0.512  0.733***
+     0.90    4.706**  1.900***     0.376   0.457**   0.470**   0.555**   0.542**   0.518**  1.991***  0.621***  0.537***
+     0.80   4.134***  1.512***   0.344**  0.434***  0.496***   0.468**  0.524***  0.574***  1.435***  0.661***  0.737***
+     0.70   4.853***  1.712***  0.449***  0.413***   0.395**   0.467**  0.590***  0.633***  1.135***  0.482***    0.289*
+     0.60     1.640*  0.855***  0.303***    0.160*    0.189*   0.277**   0.268**   0.244**   0.379**    0.188*  0.262***
+     0.50      1.102   0.822**  0.439***  0.290***    0.213*  0.334***  0.336***    0.224*   0.495**     0.064     0.005
+     0.40   3.521***    0.734*   0.293**   0.247**    0.249*   0.365**  0.393***  0.362***   0.581**     0.131     0.070
+     0.30    2.660**  1.030***   0.292**   0.275**    0.279*   0.365**  0.403***  0.369***    0.508*     0.138     0.010
+     0.20    2.445**  1.125***   0.252**  0.315***     0.148     0.172   0.268**     0.146     0.365     0.112     0.067
+     0.10   3.150***   0.770**     0.151     0.118    0.204*     0.173     0.189  0.337***   0.577**     0.128     0.134
+     0.05   2.125***  0.529***   0.098**     0.058     0.061   0.126**    0.088*  0.136***    0.165*    0.082*     0.031
+
+Error-correction term d0 on L.y (Eq. 4)
+theta|tau       0.05      0.10      0.20      0.30      0.40      0.50      0.60      0.70      0.80      0.90      0.95
+------------------------------------------------------------------------------------------------------------------------
+     0.95  -0.882*** -0.748*** -0.459*** -0.312*** -0.417*** -0.390*** -0.351***  -0.220** -0.734*** -0.345*** -0.427***
+     0.90  -0.841*** -0.738*** -0.494*** -0.346*** -0.486*** -0.456*** -0.399***  -0.239** -0.689***  -0.313** -0.406***
+     0.80  -0.862*** -0.765*** -0.497*** -0.317*** -0.430*** -0.440*** -0.411*** -0.291*** -0.743***  -0.269** -0.300***
+     0.70  -0.917*** -0.814*** -0.604*** -0.382*** -0.534*** -0.608*** -0.556*** -0.307*** -0.718*** -0.294*** -0.310***
+     0.60  -0.914*** -0.834*** -0.628*** -0.425*** -0.510*** -0.444*** -0.411***  -0.242** -0.699***  -0.264** -0.297***
+     0.50  -0.899*** -0.866*** -0.640*** -0.539*** -0.616*** -0.554*** -0.496*** -0.259*** -0.679***  -0.252** -0.280***
+     0.40  -0.809*** -0.812*** -0.698*** -0.571*** -0.634*** -0.498*** -0.338***  -0.185** -0.614***  -0.205**  -0.245**
+     0.30  -0.902*** -0.841*** -0.667*** -0.447*** -0.543*** -0.446*** -0.307***  -0.170** -0.617***   -0.193* -0.249***
+     0.20  -0.842*** -0.761*** -0.653*** -0.406*** -0.566*** -0.469*** -0.322***  -0.184** -0.594***   -0.176*  -0.229**
+     0.10  -0.955*** -0.986*** -0.544*** -0.344*** -0.400*** -0.371*** -0.262***   -0.145* -0.541***    -0.148  -0.201**
+     0.05  -0.936*** -0.963*** -0.458*** -0.274*** -0.369*** -0.300***  -0.221**    -0.119 -0.543***    -0.118  -0.199**
+
+------------------------------------------------------------------------------------------------------------------------
+Rows: quantiles (theta) of lnGDP; columns: quantiles (tau) of lnCO2.
+*** p&lt;0.01, ** p&lt;0.05, * p&lt;0.10. Bounds test: Kripfganz-Schneider (2020) I(1) p-values; N = 53.
+Coefficients: t(50) with OLS standard errors; LR SE by the delta method.
+Cointegrated pairs (p&lt;0.10): 53 of 121</pre>
+<div class='interp'><b>Reading the results.</b> Cointegration between the quantiles of lnCO2 and lnGDP is found for 53 of 121 quantile pairs (44%). It is most frequent at low quantiles of lnCO2 (88% of pairs with tau &lt;= 0.2) versus high quantiles (12% with tau &gt;= 0.8). Among cointegrated pairs, the long-run coefficient ranges from -1.833 to 1.531 (median 0.582); 36 are significant at 5%. The largest significant long-run effect (1.531) arises when lnGDP is at its 0.95 quantile and lnCO2 at its 0.95 quantile: a 1% rise in lnGDP is associated with a 1.53% change in lnCO2 in the long run (log-log specification). The error-correction term is negative and significant for 115 of 121 pairs (median -0.447: about 45% of a deviation from equilibrium is corrected each period). Short-run effects are significant for 76 pairs, with median 0.393.</div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m5_DZ_lr_heatmap.png' alt='Long-run coefficients, cointegrated pairs (stars: p-values).'><figcaption>Long-run coefficients, cointegrated pairs (stars: p-values).</figcaption></figure><figure><img loading='lazy' src='assets/m5_DZ_lr_surface.png' alt='3D surface of the long-run coefficients.'><figcaption>3D surface of the long-run coefficients.</figcaption></figure></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m5_DZ_coint.png' alt='Bounds-test F; framed cells are cointegrated (p &lt; 0.10).'><figcaption>Bounds-test F; framed cells are cointegrated (p < 0.10).</figcaption></figure><figure><img loading='lazy' src='assets/m5_DZ_qser.png' alt='Observed ln CO₂ and its quantile series (Li, 2022).'><figcaption>Observed ln CO₂ and its quantile series (Li, 2022).</figcaption></figure></div>
+<div class='grid g2'><figure><img loading='lazy' src='assets/m5_DZ_sr_heatmap.png' alt='Short-run coefficients.'><figcaption>Short-run coefficients.</figcaption></figure><figure><img loading='lazy' src='assets/m5_DZ_ect_heatmap.png' alt='Error-correction term.'><figcaption>Error-correction term.</figcaption></figure></div>
+<h4>Egypt</h4><div class='interp'><b>Reading the results.</b> Cointegration between the quantiles of lnCO2 and lnGDP is found for 6 of 121 quantile pairs (5%). It is most frequent at low quantiles of lnCO2 (6% of pairs with tau &lt;= 0.2) versus high quantiles (3% with tau &gt;= 0.8). Among cointegrated pairs, the long-run coefficient ranges from 0.692 to 1.101 (median 0.782); 6 are significant at 5%. The largest significant long-run effect (1.101) arises when lnGDP is at its 0.05 quantile and lnCO2 at its 0.10 quantile: a 1% rise in lnGDP is associated with a 1.10% change in lnCO2 in the long run (log-log specification). The error-correction term is negative and significant for 104 of 121 pairs (median -0.365: about 37% of a deviation from equilibrium is corrected each period). Short-run effects are significant for 94 pairs, with median 0.231.</div><div class='grid g2'><figure><img loading='lazy' src='assets/m5_EG_lr_heatmap.png' alt='Egypt: long-run coefficients.'><figcaption>Egypt: long-run coefficients.</figcaption></figure><figure><img loading='lazy' src='assets/m5_EG_lr_surface.png' alt='Egypt: 3D long-run surface.'><figcaption>Egypt: 3D long-run surface.</figcaption></figure></div>
+</section>
+<section id='api'><h2><span class='kick'>Syntax</span>Main functions</h2><p class='sub'>Every result has <code>.summary()</code>, <code>.to_latex()</code>, <code>.to_markdown()</code>, <code>.to_frame()</code>, <code>.interpret()</code> and <code>.plot(kind)</code>. Full argument lists are in the docstrings (<code>help(qf.qqc_gs)</code>) and in the <a href='https://github.com/merwanroudane/qqfrontier/blob/main/GUIDE.md'>guide</a>.</p><div class='grid g2'>
+<div class='card mod' style='--c:var(--m1)'><span class='tag'>M1</span><h4>qqfrontier.connectedness</h4><pre><code class='language-python'>qqc_gs(x, taus, nlag=1, window=200, horizon=20, cov_type=&#x27;uncentered&#x27;)
+qqc_kernel(x, taus, window=200, horizon=20, bandwidth=0.15, presample=100, noncross=&#x27;bondell&#x27;, n_jobs=1)
+qqc_tvp(x, taus, horizon=30, delta=0.99, kappa=0.99)</code></pre><p>Also: <code>gfevd, connectedness_table, decompose_tci, compare_heatmaps, cond_pit, dqlm, sim_qqvar, mc_qqvar</code></p></div>
+<div class='card mod' style='--c:var(--m2)'><span class='tag'>M2</span><h4>qqfrontier.quantilogram</h4><pre><code class='language-python'>cross_quantilogram(y1, y2, tau1, tau2, k)
+cross_quantilogram_test(y1, y2, tau1, tau2, max_lag=20, n_boot=1000, sup_range=None, self_normalized=False)
+partial_cross_quantilogram(y1, y2, controls, tau1, tau2, tau_z, k=1)</code></pre><p>Also: <code>block_length, stationary_bootstrap_index</code></p></div>
+<div class='card mod' style='--c:var(--m3)'><span class='tag'>M3</span><h4>qqfrontier.causality</h4><pre><code class='language-python'>qgc_instability(y, x, lags=1, taus=0.05..0.95, n_boot=499, method=&#x27;bootstrap&#x27;, moment=1, regimes=True)
+qgc_table(y, x, lags=(1,3,6,9))
+qgc_map(y, x, lags=(1,...,6))</code></pre><p>Also: <code>simulate_null</code></p></div>
+<div class='card mod' style='--c:var(--m4)'><span class='tag'>M4</span><h4>qqfrontier.coherency</h4><pre><code class='language-python'>quantile_coherency(x, y, taus, bandwidth=0.5 n^-1/4, kernel=&#x27;epanechnikov&#x27;, ci=True, periods={&#x27;W&#x27;:5,&#x27;M&#x27;:22,&#x27;Y&#x27;:250})</code></pre><p>Also: <code>kernel_weights</code></p></div>
+<div class='card mod' style='--c:var(--m5)'><span class='tag'>M5</span><h4>qqfrontier.qqardl</h4><pre><code class='language-python'>qqardl_fit(y, x, tau=(.05,.10,...,.95), theta=None, lags=(1,1), btest=&#x27;eq1&#x27;, vce=&#x27;ols&#x27;, lrtype=&#x27;multiplier&#x27;)
+qser(y, taus)
+ardl_bounds_pvalue(F, n, k=1, sr=2)</code></pre></div>
+</div></section>
+<section id='refs'><h2><span class='kick'>References</span>Papers implemented</h2><div class='card'><ol>
+<li>Baruník, J. and Kley, T. (2019). Quantile coherency. The Econometrics Journal, 22(2), 131–152. <a href='https://doi.org/10.1093/ectj/utz002'>doi:10.1093/ectj/utz002</a></li>
+<li>Bonaccolto, G., Caporin, M. and Gupta, R. (2026). Rethinking quantile-on-quantile connectedness. Finance Research Letters, 114, 111095.</li>
+<li>Bondell, H. D., Reich, B. J. and Wang, H. (2010). Noncrossing quantile regression curve estimation. Biometrika, 97(4), 825–838. <a href='https://doi.org/10.1093/biomet/asq048'>doi:10.1093/biomet/asq048</a></li>
+<li>Candelo-Viáfara, J. M. and Orrego-Reyes, J. E. (2026). A TVP quantile-on-quantile VAR approach. SSRN. <a href='https://doi.org/10.2139/ssrn.7434976'>doi:10.2139/ssrn.7434976</a></li>
+<li>Chatziantoniou, I., Gabauer, D. and Stenfors, A. (2021). Economics Letters, 204, 109891. <a href='https://doi.org/10.1016/j.econlet.2021.109891'>doi:10.1016/j.econlet.2021.109891</a></li>
+<li>Destek, M. A., Radulescu, M., Ozkan, O. and Balsalobre-Lorente, D. (2025). Journal of Environmental Management, 389, 126089. <a href='https://doi.org/10.1016/j.jenvman.2025.126089'>doi:10.1016/j.jenvman.2025.126089</a></li>
+<li>Diebold, F. X. and Yilmaz, K. (2012). International Journal of Forecasting, 28(1), 57–66. <a href='https://doi.org/10.1016/j.ijforecast.2011.02.006'>doi:10.1016/j.ijforecast.2011.02.006</a></li>
+<li>Gabauer, D. and Stenfors, A. (2024). Finance Research Letters, 60, 104852. <a href='https://doi.org/10.1016/j.frl.2023.104852'>doi:10.1016/j.frl.2023.104852</a></li>
+<li>Han, H., Linton, O., Oka, T. and Whang, Y.-J. (2016). The cross-quantilogram. Journal of Econometrics, 193(1), 251–270. <a href='https://doi.org/10.1016/j.jeconom.2016.03.001'>doi:10.1016/j.jeconom.2016.03.001</a></li>
+<li>Kripfganz, S. and Schneider, D. C. (2020). Oxford Bulletin of Economics and Statistics, 82(6), 1456–1481. <a href='https://doi.org/10.1111/obes.12377'>doi:10.1111/obes.12377</a></li>
+<li>Li, T.-H. (2022). Quantile Fourier transform, quantile series, and nonparametric estimation of quantile spectra. arXiv:2211.05844. <a href='https://doi.org/10.48550/arXiv.2211.05844'>doi:10.48550/arXiv.2211.05844</a></li>
+<li>Mayer, A., Wied, D. and Troster, V. (2025). Quantile Granger causality in the presence of instability. Journal of Econometrics, 249, 105992. <a href='https://doi.org/10.1016/j.jeconom.2025.105992'>doi:10.1016/j.jeconom.2025.105992</a></li>
+<li>Pesaran, M. H., Shin, Y. and Smith, R. J. (2001). Journal of Applied Econometrics, 16(3), 289–326. <a href='https://doi.org/10.1002/jae.616'>doi:10.1002/jae.616</a></li>
+<li>Politis, D. N. and Romano, J. P. (1994). The stationary bootstrap. JASA, 89(428), 1303–1313. <a href='https://doi.org/10.1080/01621459.1994.10476870'>doi:10.1080/01621459.1994.10476870</a></li>
+</ol></div></section>
+<section id="author"><h2><span class="kick">Author</span>Dr Merwan Roudane</h2>
+<div class="card author"><div class="avatar">MR</div><div>
+<p style="margin:0"><b>Dr Merwan Roudane</b> — econometrician, author of R, Python and Stata packages for quantile-on-quantile and
+frequency-domain econometrics.<br>✉ <a href="mailto:merwanroudane920@gmail.com">merwanroudane920@gmail.com</a> ·
+<a href="https://github.com/merwanroudane">github.com/merwanroudane</a></p>
+<div class="links"><a href="https://github.com/merwanroudane/qqfrontier">qqfrontier on GitHub</a><a href="https://pypi.org/project/qqfrontier/0.1.0/">qqfrontier on PyPI</a><a href="https://merwanroudane.github.io/qqfrontier/">Documentation</a>
+<a href="https://cran.r-project.org/package=QuantileOnQuantile">R: QuantileOnQuantile</a><a href="https://cran.r-project.org/package=mqqr">R: mqqr</a>
+<a href="https://cran.r-project.org/package=qqkrls">R: qqkrls</a><a href="https://cran.r-project.org/package=mqqcause">R: mqqcause</a>
+<a href="https://pypi.org/project/wqr/">Python: wqr</a><a href="https://pypi.org/project/mqqr/">Python: mqqr</a>
+<a href="https://pypi.org/project/qqkrls/">Python: qqkrls</a></div></div></div>
+<h3>Cite this package</h3><pre><code class='language-python'>@software{roudane2026qqfrontier,
+  author  = {Roudane, Merwan},
+  title   = {qqfrontier: Frontier Quantile-on-Quantile Econometrics in Python},
+  year    = {2026},
+  version = {0.1.1},
+  url     = {https://github.com/merwanroudane/qqfrontier}
+}</code></pre><p>Please also cite the original paper of each method you use (see References).</p></section>
+</main><footer>© 2026 Dr Merwan Roudane · MIT Licence · qqfrontier 0.1.1 · updated 27 November 2026</footer>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script></body></html>

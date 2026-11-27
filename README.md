@@ -1,5 +1,9 @@
 # qqfrontier
 
+<p align="center">
+  <a href="https://merwanroudane.github.io/qqfrontier/"><img src="https://raw.githubusercontent.com/merwanroudane/qqfrontier/main/docs/assets/banner.png" alt="qqfrontier: frontier quantile-on-quantile econometrics in Python" width="100%"></a>
+</p>
+
 [![PyPI](https://img.shields.io/pypi/v/qqfrontier.svg)](https://pypi.org/project/qqfrontier/)
 [![Python](https://img.shields.io/pypi/pyversions/qqfrontier.svg)](https://pypi.org/project/qqfrontier/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -18,7 +22,7 @@ interactive 3D surfaces, and a plain-language interpretation of every result.
 | **M4** `coherency` | Quantile coherency across frequencies with confidence intervals | Baruník & Kley (2019, *Econometrics Journal*) |
 | **M5** `qqardl` | Quantile-on-quantile ARDL: bounds test, long run, short run, ECT | Destek et al. (2025, *J. Environmental Management*) |
 
-📖 **Website:** https://merwanroudane.github.io/qqfrontier/ · 🧭 **Step-by-step guide:** [GUIDE.md](GUIDE.md) · 📐 **Methods:** [docs/methods.md](docs/methods.md)
+📦 **PyPI:** https://pypi.org/project/qqfrontier/0.1.0/ · 📖 **Website:** https://merwanroudane.github.io/qqfrontier/ · 🧭 **Step-by-step guide:** [GUIDE.md](GUIDE.md) · 📐 **Methods:** [docs/methods.md](docs/methods.md)
 🧑‍💻 **Author:** Dr Merwan Roudane · merwanroudane920@gmail.com · https://github.com/merwanroudane
 
 ---
@@ -123,7 +127,7 @@ Run the tests with `pytest -q`.
   author  = {Roudane, Merwan},
   title   = {qqfrontier: Frontier Quantile-on-Quantile Econometrics in Python},
   year    = {2026},
-  version = {0.1.0},
+  version = {0.1.1},
   url     = {https://github.com/merwanroudane/qqfrontier}
 }
 ```

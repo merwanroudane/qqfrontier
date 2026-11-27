@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.1] - 2026-11-27
+
+### Fixed
+- `qgc_instability` / `qgc_table`: the supWald benchmark no longer fails when the bootstrap
+  covariance of the Granger coefficients is singular at extreme quantiles of discrete data
+  (Moore-Penrose inverse); the self-normalised cross-quantilogram and the partial
+  cross-quantilogram use the same safeguard.
+
+### Added
+- Banner, PyPI links, documentation site builder, `--modules` option of the example script.
+
 ## [0.1.0] - 2026-11-27
 
 ### Added

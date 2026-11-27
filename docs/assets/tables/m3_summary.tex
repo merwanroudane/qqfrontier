@@ -1,0 +1,17 @@
+% Preamble: \newcommand{\sym}[1]{\ensuremath{^{#1}}}
+\begin{table}[htbp]\centering
+\caption{Quantile Granger causality robust to instability}\label{tab:qgc}
+\begin{tabular}{lcccccc}
+\toprule
+Quantile range & \multicolumn{2}{c}{supWald} & \multicolumn{2}{c}{expLM} & \multicolumn{2}{c}{supLM} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & Stat. & $p$-value & Stat. & $p$-value & Stat. & $p$-value \\
+\midrule
+$[0.05, 0.95]$ & 21.117\sym{***} & 0.000 & 1.664\sym{**} & 0.012 & 1.690\sym{*} & 0.080 \\
+$[0.05, 0.20]$ & 1.662 & 0.553 & 0.200 & 0.359 & 0.757 & 0.513 \\
+$[0.40, 0.60]$ & 21.117\sym{***} & 0.000 & 0.405\sym{**} & 0.040 & 1.674\sym{*} & 0.056 \\
+$[0.80, 0.95]$ & 8.284\sym{**} & 0.018 & 0.295\sym{***} & 0.000 & 1.654\sym{***} & 0.004 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.95\linewidth}\footnotesize\textit{Notes:} H0: US2Y does not Granger-cause US2Y10Y in quantiles with a stable effect; q = 1 lags; n = 6252; bootstrap critical values (Algorithm 1, B = 499). \sym{***} $p<0.01$, \sym{**} $p<0.05$, \sym{*} $p<0.10$.\end{minipage}
+\end{table}

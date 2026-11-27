@@ -37,7 +37,7 @@ from .quantilogram import (CQResult, cross_quantilogram, cross_quantilogram_test
 try:
     __version__ = _v("qqfrontier")
 except PackageNotFoundError:  # pragma: no cover - source tree
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
 __author__ = "Dr Merwan Roudane"
 __email__ = "merwanroudane920@gmail.com"
 

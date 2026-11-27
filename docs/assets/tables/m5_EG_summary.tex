@@ -1,0 +1,25 @@
+% Preamble: \newcommand{\sym}[1]{\ensuremath{^{#1}}}  \usepackage{booktabs}
+\begin{table}[htbp]\centering
+\caption{QQARDL long-run coefficients, Egypt}\label{tab:qqardl}
+\small
+\begin{tabular}{lccccccccccc}
+\toprule
+lnGDP quantile (theta) & \multicolumn{11}{c}{lnCO2 quantile (tau)} \\
+\cmidrule(lr){2-12}
+ & 0.05 & 0.10 & 0.20 & 0.30 & 0.40 & 0.50 & 0.60 & 0.70 & 0.80 & 0.90 & 0.95 \\
+\midrule
+0.95 & . & . & . & . & . & . & . & . & . & . & . \\
+0.90 & . & . & . & . & . & . & . & . & . & . & . \\
+0.80 & . & . & . & . & . & . & . & . & . & . & . \\
+0.70 & . & . & . & . & . & . & . & . & . & . & . \\
+0.60 & . & . & . & . & . & . & . & 0.780\sym{***} & 0.700\sym{***} & . & . \\
+0.50 & . & . & . & . & . & . & . & . & . & . & . \\
+0.40 & . & . & . & . & . & . & . & . & . & . & . \\
+0.30 & . & . & . & . & . & . & . & . & . & . & . \\
+0.20 & . & . & . & . & . & . & . & . & . & . & . \\
+0.10 & . & . & . & . & 0.692\sym{***} & . & . & . & . & . & . \\
+0.05 & . & 1.101\sym{***} & 0.919\sym{***} & . & 0.784\sym{***} & . & . & . & . & . & . \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.95\linewidth}\footnotesize\textit{Notes:} Notes: rows: quantiles (theta) of lnGDP; columns: quantiles (tau) of lnCO2. Bounds test: Kripfganz-Schneider (2020) I(1) p-values; N = 53. Coefficients: t(50) with OLS standard errors; LR s.e. by the delta method. \sym{***} $p<0.01$, \sym{**} $p<0.05$, \sym{*} $p<0.10$.\end{minipage}
+\end{table}
