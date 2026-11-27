@@ -22,7 +22,7 @@ interactive 3D surfaces, and a plain-language interpretation of every result.
 | **M4** `coherency` | Quantile coherency across frequencies with confidence intervals | Baruník & Kley (2019, *Econometrics Journal*) |
 | **M5** `qqardl` | Quantile-on-quantile ARDL: bounds test, long run, short run, ECT | Destek et al. (2025, *J. Environmental Management*) |
 
-📦 **PyPI:** https://pypi.org/project/qqfrontier/0.1.0/ · 📖 **Website:** https://merwanroudane.github.io/qqfrontier/ · 🧭 **Step-by-step guide:** [GUIDE.md](GUIDE.md) · 📐 **Methods:** [docs/methods.md](docs/methods.md)
+📦 **PyPI:** https://pypi.org/project/qqfrontier/0.1.1/ · 📖 **Website:** https://merwanroudane.github.io/qqfrontier/ · 🧭 **Step-by-step guide:** [GUIDE.md](GUIDE.md) · 📐 **Methods:** [docs/methods.md](docs/methods.md)
 🧑‍💻 **Author:** Dr Merwan Roudane · merwanroudane920@gmail.com · https://github.com/merwanroudane
 
 ---

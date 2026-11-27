@@ -15,7 +15,7 @@ A = DOCS / "assets"
 T = A / "tables"
 VERSION = "0.1.1"
 REPO = "https://github.com/merwanroudane/qqfrontier"
-PYPI = "https://pypi.org/project/qqfrontier/0.1.0/"
+PYPI = "https://pypi.org/project/qqfrontier/0.1.1/"
 SITE = "https://merwanroudane.github.io/qqfrontier/"
 
 
