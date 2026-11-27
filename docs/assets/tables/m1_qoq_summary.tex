@@ -1,0 +1,24 @@
+% Preamble: \newcommand{\sym}[1]{\ensuremath{^{#1}}}  \usepackage{booktabs}
+\begin{table}[htbp]\centering
+\caption{Averaged TCI, Q-on-Q-QVAR (Bonaccolto et al., 2026)}\label{tab:qqconn}
+\small
+\begin{tabular}{lcccccccccc}
+\toprule
+US2Y quantile & \multicolumn{10}{c}{US2Y10Y quantile} \\
+\cmidrule(lr){2-11}
+ & 0.05 & 0.15 & 0.25 & 0.35 & 0.45 & 0.55 & 0.65 & 0.75 & 0.85 & 0.95 \\
+\midrule
+0.95 & 31.3 & 23.1 & 22.1 & 20.9 & 21.2 & 20.8 & 20.8 & 22.3 & 24.3 & 29.9 \\
+0.85 & 24.9 & 18.9 & 18.7 & 18.9 & 19.5 & 19.1 & 18.4 & 18.7 & 20.1 & 23.4 \\
+0.75 & 21.2 & 18.6 & 18.2 & 18.6 & 18.9 & 18.9 & 18.8 & 19.0 & 19.6 & 20.6 \\
+0.65 & 18.8 & 18.2 & 18.1 & 18.6 & 18.6 & 18.7 & 18.4 & 19.1 & 19.5 & 19.9 \\
+0.55 & 19.5 & 18.1 & 18.0 & 18.0 & 18.2 & 18.0 & 18.4 & 19.0 & 19.8 & 20.0 \\
+0.45 & 20.9 & 18.5 & 18.0 & 17.9 & 17.9 & 17.5 & 18.1 & 19.0 & 19.8 & 20.3 \\
+0.35 & 22.3 & 19.1 & 18.1 & 18.3 & 18.5 & 18.0 & 18.5 & 18.7 & 19.2 & 20.5 \\
+0.25 & 23.0 & 19.7 & 19.0 & 18.5 & 18.3 & 18.4 & 18.9 & 19.1 & 19.4 & 21.9 \\
+0.15 & 22.7 & 21.0 & 19.8 & 19.1 & 19.5 & 19.8 & 20.0 & 19.9 & 20.4 & 24.5 \\
+0.05 & 25.2 & 23.7 & 22.8 & 22.3 & 22.0 & 23.2 & 22.7 & 22.8 & 23.6 & 30.2 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.95\linewidth}\footnotesize\textit{Notes:} Notes: Bonaccolto-Caporin-Gupta kernel Q-on-Q-QVAR; 200-obs rolling window; QVAR(1); 20-step-ahead GFEVD; gaussian kernel, h = 0.15; centered residual matrix; 6054 dates (1999-04-29 to 2023-07-11).\end{minipage}
+\end{table}

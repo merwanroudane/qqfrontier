@@ -35,24 +35,26 @@ warnings.filterwarnings("ignore")
 ap = argparse.ArgumentParser()
 ap.add_argument("--quick", action="store_true")
 ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / "docs" / "assets"))
-ap.add_argument("--cache", default=str(Path(__file__).resolve().parents[1] / "_work" / "cache"))
+ap.add_argument("--cache", default="", help="folder to cache fitted results (off by default)")
 ap.add_argument("--jobs", type=int, default=8)
 args = ap.parse_args()
 OUT = Path(args.out)
 (OUT / "tables").mkdir(parents=True, exist_ok=True)
-CACHE = Path(args.cache)
-CACHE.mkdir(parents=True, exist_ok=True)
+CACHE = Path(args.cache) if args.cache else None
+if CACHE:
+    CACHE.mkdir(parents=True, exist_ok=True)
 B_CQ, B_GC = (200, 99) if args.quick else (1000, 499)
 
 
 def cached(name, fun):
-    f = CACHE / f"{name}{'_quick' if args.quick else ''}.pkl"
-    if f.exists():
+    f = CACHE / f"{name}{'_quick' if args.quick else ''}.pkl" if CACHE else None
+    if f is not None and f.exists():
         return pickle.load(open(f, "rb"))
     t = time.time()
     r = fun()
-    print(f"  [{name}] {time.time() - t:6.1f}s")
-    pickle.dump(r, open(f, "wb"))
+    print(f"  [{name}] {time.time() - t:6.1f}s", flush=True)
+    if f is not None:
+        pickle.dump(r, open(f, "wb"))
     return r
 
 

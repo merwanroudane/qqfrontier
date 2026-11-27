@@ -16,7 +16,8 @@
   Algorithm 2, supWald benchmark; multi-lag tables, causality in variance, lag x quantile map.
 - **M4 coherency**: quantile coherency of Barunik and Kley (2019) with pointwise CIs.
 - **M5 qqardl**: quantile-on-quantile ARDL of Destek et al. (2025), a port of the Stata command
-  qqardl 1.1.0, with Kripfganz-Schneider (2020) bounds-test p-values.
+  qqardl 1.1.0, with Kripfganz-Schneider (2020) bounds-test p-values (case III critical-value
+  coefficients shipped with the package, so no Stata installation is needed).
 - Shared journal layer: annotated heatmaps, static and interactive 3D surfaces, contours,
   cross-sections, booktabs LaTeX / Markdown tables, plain-language `interpret()`.
 - Quantile-regression engine: numba Frisch-Newton (quantreg rq.fit.fnb), HiGHS simplex,

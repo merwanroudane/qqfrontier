@@ -268,9 +268,9 @@ r.plot("diagonal", stat="lr")      # long run along tau = theta with 95% band
 ```
 
 Options: `lags=(p, q)`, `btest="ecm"`, `vce="robust"`, `lrtype="beta"`, `lrall=True`.
-Bounds-test p-values use the Kripfganz–Schneider (2020) response surfaces. They are read
-from the Stata `ardl` package if it is installed (`ssc install ardl`), or from a file you
-point to with `coefs_path=...`; otherwise the PSS (2001) 10% bound decides cointegration.
+Bounds-test p-values use the Kripfganz–Schneider (2020) response surfaces (case III), shipped
+with the package as in Destek et al. (2025): cointegration when p < 0.10, i.e. F above the
+10% I(1) critical value. No Stata installation is needed.
 
 ---
 

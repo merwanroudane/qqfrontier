@@ -172,6 +172,22 @@ def _find_ks_file(path: Optional[str] = None) -> Optional[Path]:
 _KS_CACHE = {}
 
 
+def _ks_coefficients(case: int = 3, coefs_path: Optional[str] = None) -> Optional[pd.DataFrame]:
+    """Kripfganz-Schneider (2020) response-surface coefficients (embedded for case III)."""
+    if coefs_path is None and case == 3:
+        if "embedded" not in _KS_CACHE:
+            from importlib import resources
+            with resources.files(__package__).joinpath("ks2020_case3.csv.gz").open("rb") as fh:
+                _KS_CACHE["embedded"] = pd.read_csv(fh, compression="gzip")
+        return _KS_CACHE["embedded"]
+    f = _find_ks_file(coefs_path)
+    if f is None:
+        return None
+    if str(f) not in _KS_CACHE:
+        _KS_CACHE[str(f)] = pd.read_stata(f)
+    return _KS_CACHE[str(f)]
+
+
 def ardl_bounds_pvalue(stat: float, n: int, k: int = 1, sr: int = 2, case: int = 3, which: str = "F",
                        order: int = 1, coefs_path: Optional[str] = None) -> float:
     """Approximate p-value of the PSS bounds test from Kripfganz and Schneider (2020).
@@ -181,23 +197,27 @@ def ardl_bounds_pvalue(stat: float, n: int, k: int = 1, sr: int = 2, case: int =
     tail on the predicted critical values at the 9 quantiles nearest to ``stat``
     (as Stata's ``ardlbounds``).  ``order`` = 1 gives the I(1) bound, 0 the I(0) bound.
 
-    Requires the coefficient file ``ardl_surfreg_coefs.dta`` of the Stata ``ardl`` package
-    (searched in the Stata ado path, or given by ``coefs_path`` / the environment variable
-    ``QQFRONTIER_ARDL_COEFS``); returns NaN if it cannot be found.
+    The response-surface coefficients of Kripfganz and Schneider (2020) for case III
+    (unrestricted intercept, no trend: the QQARDL specification of Destek et al., 2025) are
+    shipped with the package, so p-values are available on every machine.  Other cases use
+    the full coefficient file ``ardl_surfreg_coefs.dta`` of the Stata ``ardl`` package
+    (Stata ado path, ``coefs_path`` or the environment variable ``QQFRONTIER_ARDL_COEFS``);
+    NaN is returned if it cannot be found.
 
     References
     ----------
     Kripfganz, S. and Schneider, D. C. (2020). Response surface regressions for critical value
     bounds and approximate p-values in equilibrium correction models. Oxford Bulletin of
     Economics and Statistics, 82(6), 1456-1481. https://doi.org/10.1111/obes.12377
+
+    Examples
+    --------
+    >>> round(ardl_bounds_pvalue(4.78, n=53, k=1, sr=2), 3) < 0.15
+    True
     """
-    f = _find_ks_file(coefs_path)
-    if f is None:
+    D = _ks_coefficients(case, coefs_path)
+    if D is None:
         return float("nan")
-    key = str(f)
-    if key not in _KS_CACHE:
-        _KS_CACHE[key] = pd.read_stata(f)
-    D = _KS_CACHE[key]
     D = D[(D["stat"] == which) & (D["c"] == case) & (D["I"] == order)].reset_index(drop=True)
     cv = (D["theta_0_2_0"] + D["theta_0_2_1"] * sr) / n ** 2 + (D["theta_0_3_0"] + D["theta_0_3_1"] * sr) / n ** 3
     for j in range(5):
@@ -308,7 +328,7 @@ def qqardl(y, x, tau: Sequence[float] = DEFAULT_QUANTILES, theta: Optional[Seque
     df = N - (3 + (p - 1) + q)
     tp = lambda est, se: 2 * stats.t.sf(np.abs(est / se), df)
     FP = np.full(shape, np.nan)
-    have_ks = _find_ks_file(coefs_path) is not None
+    have_ks = _ks_coefficients(3, coefs_path) is not None          # embedded for case III
     if have_ks:
         for i in range(shape[0]):
             for j in range(shape[1]):

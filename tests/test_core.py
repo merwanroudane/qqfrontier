@@ -170,10 +170,8 @@ def test_qqardl_matches_stata_qqardl():
     assert r.NB == 53 and r.df == 50
 
 
-def test_qqardl_bounds_pvalue_and_coint_count_if_ks_available():
-    from qqfrontier.qqardl._core import _find_ks_file
-    if _find_ks_file() is None:
-        pytest.skip("Kripfganz-Schneider coefficient file not installed")
+def test_qqardl_bounds_pvalues_embedded_match_stata():
+    # embedded Kripfganz-Schneider (2020) case III coefficients: no Stata needed
     d = qf.load_wdi_co2_gdp("Algeria").set_index("year")
     r = qf.qqardl_fit(d["lnCO2"], d["lnGDP"])
     assert int(r.coint.sum()) == 53                 # Stata: 53 of 121
